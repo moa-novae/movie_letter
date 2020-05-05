@@ -1,0 +1,50 @@
+article {
+  display: grid;
+  grid-template-columns:
+    1fr [text] minmax(40%, 7em) clamp(5%, 1em, 2em) [img] minmax(40%, 6em)
+    1fr;
+  grid-template-rows: [first] minmax(20vh, 10em) minmax(30%, 5em) [second] minmax(
+      20vh,
+      10em
+    );
+  flex-direction: column;
+  align-items: center;
+}
+
+article {
+  color: #3a3c6d;
+  text-align: right;
+  font-family: sans-serif;
+  box-sizing: border-box;
+  font-size: 1em;
+  height: 10em;
+  margin: 1em 0;
+  padding: 1em 0;
+  line-height: 1.5em;
+}
+
+.overview {
+  grid-column: text / span 1;
+  grid-row: first / span 1;
+}
+
+.email {
+  object-fit: cover;
+  grid-column: img / span 1;
+  grid-row: first / span 1;
+  width: 100%;
+  max-height: 100%;
+}
+
+.filter-method {
+  grid-column: text / span 1;
+  grid-row: second / span 1;
+}
+
+.filter {
+  object-fit: cover;
+  grid-column: img / span 1;
+  grid-row: second / span 1;
+  width: 100%;
+  max-height: 100%;
+}

@@ -1,8 +1,10 @@
 import Head from "next/head";
 import axios from "axios";
 
-import Hero from "../components/hero/hero";
-import "../styles/index.scss";
+import Hero from "../components/hero/Hero";
+import Introduction from "../components/introduction/Introduction";
+import Footer from "../components/footer/Footer";
+import style from "../styles/index.scss";
 
 export default function Home({ randomPosterUrl }) {
   return (
@@ -15,8 +17,11 @@ export default function Home({ randomPosterUrl }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
         />
       </Head>
-      <Hero randomPosterUrl={randomPosterUrl} />
-      <main></main>
+      <main className={style.landing}>
+        <Hero randomPosterUrl={randomPosterUrl} />
+        <Introduction />
+      </main>
+      <Footer />
     </>
   );
 }
@@ -30,10 +35,10 @@ export async function getServerSideProps() {
   //res.data has many movies
   const randomTopMovie = selectRandomFromArray(res.data);
   //a movie has many posters
-  const randomPosterUrl = selectRandomFromArray(randomTopMovie.image_path);
-  if (!randomPosterUrl)
-    randomPosterUrl =
-      "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
+  const randomPosterUrl =
+    selectRandomFromArray(randomTopMovie.image_path) ||
+    "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
+
   return {
     props: { randomPosterUrl },
   };
