@@ -22,4 +22,17 @@
   font-family: sans-serif;
   font-size: clamp(1em, 7vw, 3em);
   text-shadow: -1px -1px 1px #000;
+  animation: fadein 1s;
+  animation-delay: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
