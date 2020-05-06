@@ -1,5 +1,6 @@
 import Head from "next/head";
 import axios from "axios";
+import Link from "next/link";
 
 import Hero from "../components/hero/Hero";
 import Introduction from "../components/introduction/Introduction";
