@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import shortid from "shortid";
-export default function InputLine({ genres, filterRule, setFilterRules, id }) {
+export default function InputLine({
+  genres,
+  filterRule,
+  setFilterRules,
+  id,
+  canDeleteRule,
+}) {
   const selectedInputDetail = {
     cast: <input type="text" name="cast" />,
     director: <input type="text" name="director" />,
     genre: (
       <select name="genre">
         {genres.map((genre) => (
-          <option value={genre.genre_id}>{genre.name}</option>
+          <option key={genre} value={genre.genre_id}>
+            {genre.name}
+          </option>
         ))}
       </select>
     ),
@@ -57,14 +65,19 @@ export default function InputLine({ genres, filterRule, setFilterRules, id }) {
         onChange={handleInputTypeChange}
       >
         {Object.keys(selectedInputDetail).map((filterType) => (
-          <option value={filterType}>{filterType}</option>
+          <option key={filterType} value={filterType}>{filterType}</option>
         ))}
       </select>
       {selectedInputDetail[filterRule.type]}
       <button type="button" name={id} onClick={handleFilterRuleAdd}>
         +
       </button>
-      <button type="button" name={id} onClick={handleFilterRuleDelete}>
+      <button
+        type="button"
+        name={id}
+        disabled={!canDeleteRule}
+        onClick={handleFilterRuleDelete}
+      >
         -
       </button>
     </div>
