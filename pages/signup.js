@@ -1,5 +1,8 @@
 import Head from "next/head";
-export default function SignUp() {
+import Multifield from "../components/multifield/Multifield";
+import { getGenres } from "./api/genres";
+
+export default function SignUp({ genres }) {
   return (
     <>
       <Head>
@@ -11,8 +14,15 @@ export default function SignUp() {
         />
       </Head>
       <main>
-        <p>test</p>
+        <Multifield genres={genres} />
       </main>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const genres = await getGenres();
+  return {
+    props: { genres },
+  };
 }
