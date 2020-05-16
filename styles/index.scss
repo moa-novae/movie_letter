@@ -1,7 +1,13 @@
+@import "~@elastic/eui/src/theme_light.scss";
 .landing {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   width: 100vw;
 }
-
+//remove default select arrow
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}

@@ -1,47 +1,70 @@
 import React, { useState } from "react";
 import shortid from "shortid";
+import dynamic from "next/dynamic";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import {
+  EuiSelect,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiFieldText,
+  EuiButton,
+  EuiIcon,
+} from "@elastic/eui";
+const AddRemoveBtn = dynamic(() => import("../addRemoveBtn/AddRemoveBtn"), {
+  ssr: false,
+});
+import "./style.scss";
 export default function InputLine({
   genres,
   filterRule,
   setFilterRules,
   id,
   canDeleteRule,
+  error,
+  handleBlur,
+  deleteErrorsOnTypeChange,
 }) {
-  const selectedInputDetail = {
-    cast: <input type="text" name="cast" />,
-    director: <input type="text" name="director" />,
-    genre: (
-      <select name="genre">
-        {genres.map((genre) => (
-          <option key={genre} value={genre.genre_id}>
-            {genre.name}
-          </option>
-        ))}
-      </select>
-    ),
-    productionCompany: <input type="text" name="productionCompany" />,
-  };
+  const filterTypes = [
+    { value: "cast", text: "Cast" },
+    { value: "director", text: "Director" },
+    { value: "genre", text: "Genre" },
+    { value: "productionCompany", text: "Production Company" },
+  ];
+  //convert genres passed down to an obj consumable by eui
+  const genreOptions = genres.map((genre) => ({
+    value: genre.genre_id,
+    text: genre.name,
+  }));
+  // const genreOptions = genres.map((genre) => (
+  //   <option key={genre} value={genre.genre_id}>
+  //     {genre.name}
+  //   </option>
+  // ));
   function handleInputTypeChange(e) {
     const newType = e.target.value;
+    deleteErrorsOnTypeChange(id);
     setFilterRules((prev) => {
       const newState = new Map(prev);
-      newState.set(id, { ...filterRule, type: newType });
-      console.log(newState);
+      newState.set(id, { value: "", type: newType });
+
       return newState;
     });
   }
 
   function handleFilterRuleDelete(e) {
-    const targetId = e.target.name;
+    const targetId = id;
     setFilterRules((prev) => {
       const newState = new Map(prev);
       newState.delete(targetId);
+
       return newState;
     });
   }
 
   function handleFilterRuleAdd(e) {
-    const targetId = e.target.name;
+    const targetId = id;
     setFilterRules((prev) => {
       const newState = new Map();
       //A new filter rule is inserted after the filter which '+' is clicked on
@@ -53,33 +76,87 @@ export default function InputLine({
           newState.set(shortid.generate(), { type: "cast", value: "" });
         }
       }
+
+      return newState;
+    });
+  }
+
+  function handleOnChange(e) {
+    const newRuleValue = e.target.value;
+    setFilterRules((prev) => {
+      const newState = new Map(prev);
+      const oldRule = prev.get(id);
+      newState.set(id, { ...oldRule, value: newRuleValue });
       return newState;
     });
   }
 
   return (
-    <div>
-      <select
-        name="queryTypes"
-        value={filterRule.type}
-        onChange={handleInputTypeChange}
-      >
-        {Object.keys(selectedInputDetail).map((filterType) => (
-          <option key={filterType} value={filterType}>{filterType}</option>
-        ))}
-      </select>
-      {selectedInputDetail[filterRule.type]}
-      <button type="button" name={id} onClick={handleFilterRuleAdd}>
-        +
-      </button>
-      <button
-        type="button"
-        name={id}
-        disabled={!canDeleteRule}
-        onClick={handleFilterRuleDelete}
-      >
-        -
-      </button>
-    </div>
+    <EuiFlexGroup>
+      {/* Select type flexItem */}
+      <EuiFlexItem grow={false}>
+        <EuiFormRow label="Filter Type">
+          <EuiSelect
+            options={filterTypes}
+            value={filterRule.type}
+            onChange={handleInputTypeChange}
+          />
+        </EuiFormRow>
+      </EuiFlexItem>
+      {(filterRule.type === "cast" ||
+        filterRule.type === "director" ||
+        filterRule.type === "productionCompany") && (
+        <EuiFlexItem>
+          <div>
+            <EuiFormRow
+              label="Value"
+              error={error}
+              isInvalid={error && error?.length > 0}
+            >
+              <EuiFieldText
+                value={filterRule.value}
+                onChange={handleOnChange}
+                name={id}
+                onBlur={handleBlur}
+                isInvalid={error && error?.length > 0}
+              />
+            </EuiFormRow>
+
+            <AddRemoveBtn
+              handleFilterRuleAdd={handleFilterRuleAdd}
+              handleFilterRuleDelete={handleFilterRuleDelete}
+              canDeleteRule={canDeleteRule}
+            />
+          </div>
+        </EuiFlexItem>
+      )}
+
+      {filterRule.type === "genre" && (
+        <EuiFlexItem grow={false}>
+          <div>
+            <EuiFormRow
+              label="Value"
+              error={error}
+              isInvalid={error && error?.length > 0}
+            >
+              <EuiSelect
+                options={genreOptions}
+                value={filterRule.value}
+                onChange={handleOnChange}
+                name={id}
+                onBlur={handleBlur}
+                isInvalid={error && error?.length > 0}
+              />
+            </EuiFormRow>
+
+            <AddRemoveBtn
+              canDeleteRule={canDeleteRule}
+              handleFilterRuleAdd={handleFilterRuleAdd}
+              handleFilterRuleDelete={handleFilterRuleDelete}
+            />
+          </div>
+        </EuiFlexItem>
+      )}
+    </EuiFlexGroup>
   );
 }
