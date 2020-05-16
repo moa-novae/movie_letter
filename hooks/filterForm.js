@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-import useFiltervalidation from "./validation";
+import validateField from "./validation";
 
 export default function filterForm(initialState) {
   const router = useRouter();
@@ -16,40 +16,41 @@ export default function filterForm(initialState) {
     match: "all",
     name: "",
   });
-  const {
-    submiting,
-    setSubmiting,
-    errors,
-    handleBlur,
-    deleteErrorsOnTypeChange,
-    validateRules,
-  } = useFiltervalidation();
+  const [errors, setErrors] = useState({});
+  const [submiting, setSubmiting] = useState(false);
+  useEffect(() => console.log(errors), [errors]);
 
   function handleSubmit(e) {
-    //prevent submiting two times
     e.preventDefault();
+    //prevent submiting two times
     setSubmiting(true);
-    for (const [key, value] of Object.entries(form)) {
-      validateRules(key, value);
-    }
+    let errorObj = {};
+    //Check if any filter rules are empty
     for (const [id, filter] of filterRules) {
-      validateRules(id, filter.value);
+      const fieldError = validateField(id, filter.value);
+      errorObj = { ...errorObj, ...fieldError };
+    }
+    //check if rest of form filled
+    for (const [key, value] of Object.entries(form)) {
+      const fieldError = validateField(key, value);
+      errorObj = { ...errorObj, ...fieldError };
     }
     const isEmptyArray = (arr) => arr.length === 0;
-    const noErrors = Object.values(errors).every(isEmptyArray);
+    const noErrors = Object.values(errorObj).every(isEmptyArray);
     if (noErrors) {
       const output = { ...form };
       //merge filterRules into form state by removing unique id of each rule
       //value of rules with the same type are pushed to the same array
-      for (let [key, value] of filterRules) {
-        if (!output[value.type]) {
-          output[value.type] = [];
+      for (let [id, field] of filterRules) {
+        if (!output[field.type]) {
+          output[field.type] = [];
         }
-        output[value.type].push(value.value);
+        output[field.type].push(field.value);
       }
       axios.post(`/api/signup`, output).then(router.push("/dashboard"));
     } else {
       setSubmiting(false);
+      setErrors(errorObj)
     }
   }
   // ensure user cannot delete the last filter rule
@@ -65,6 +66,19 @@ export default function filterForm(initialState) {
     const newValue = e.target.value;
     const name = e.target.name;
     setForm((prev) => ({ ...prev, [name]: newValue }));
+  }
+  function handleBlur(e) {
+    const targetId = e.target.name;
+    const targetValue = e.target.value;
+    const fieldError = validateField(targetId, targetValue);
+    setErrors((prev) => ({ ...prev, ...fieldError }));
+  }
+  function deleteErrorsOnTypeChange(id) {
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[id];
+      return newErrors;
+    });
   }
   return {
     canDeleteRule,

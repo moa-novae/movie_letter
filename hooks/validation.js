@@ -1,49 +1,13 @@
-import { useState, useEffect } from "react";
+export default function (id, str) {
+  const errors = { [id]: [] };
 
-export default function () {
-  const [errors, setErrors] = useState({});
-  const [submiting, setSubmiting] = useState(false);
-
-  function validateRules(id, str) {
-    setErrors((prev) => ({ ...prev, [id]: [] }));
-    if (str.trim().length === 0) {
-      setErrors((prev) => {
-        const newState = { ...prev };
-        newState[id].push("Field cannot be empty");
-        return newState;
-      });
-    }
-    if (str.length > 255) {
-      setErrors((prev) => {
-        const newState = { ...prev };
-        newState[id].push("Field contains too many characters");
-      });
-    }
-  }
-  function handleBlur(e) {
-    const targetId = e.target.name;
-    const targetValue = e.target.value;
-    validateRules(targetId, targetValue);
-  }
-  function deleteErrorsOnTypeChange(id) {
-    setErrors((prev) => {
-      const newErrors = { ...prev };
-      delete newErrors[id];
-      return newErrors;
-    });
-  }
-  function validateForm(form) {
-    for (const [id, value] of form) {
-      validateRules(id, value.value);
-    }
+  if (str.trim().length === 0) {
+    errors[id] = ["Field cannot be empty"];
   }
 
-  return {
-    errors,
-    handleBlur,
-    deleteErrorsOnTypeChange,
-    setSubmiting,
-    submiting,
-    validateRules
-  };
+  if (str.length > 255) {
+    errors[id] = "Field contains too many characters";
+  }
+
+  return errors;
 }

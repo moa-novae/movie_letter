@@ -19,14 +19,12 @@ import {
 export default function ({ genres }) {
   const {
     canDeleteRule,
-    setCanDeleteRule,
     filterRules,
     setFilterRules,
     form,
     setForm,
     handleOnChange,
     submiting,
-    setsubmiting,
     handleSubmit,
     errors,
     handleBlur,
@@ -58,17 +56,25 @@ export default function ({ genres }) {
   return (
     <EuiForm component="form" className="filter-form">
       <EuiFormRow>
-        <EuiFormRow label="Filter Name">
+        <EuiFormRow
+          label="Filter Name"
+          error={errors.name}
+          isInvalid={errors?.name && errors?.name?.length > 0}
+        >
           <EuiFieldText
             value={form.name}
             name="name"
             onChange={handleOnChange}
+            onBlur={handleBlur}
+            isInvalid={errors?.name && errors?.name?.length > 0}
           />
         </EuiFormRow>
       </EuiFormRow>
+      {/* Eui radio has no browser style onChange event */}
       <EuiRadioGroup
         options={anyOrAll}
         idSelected={form.match}
+        name="match"
         onChange={(optionId) => {
           setForm((prev) => ({ ...prev, match: optionId }));
         }}
