@@ -4,27 +4,25 @@ import dynamic from "next/dynamic";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import {
-  EuiSelect,
+  EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
-  EuiFieldText,
-  EuiButton,
-  EuiIcon,
+  EuiSelect,
 } from "@elastic/eui";
 const AddRemoveBtn = dynamic(() => import("../addRemoveBtn/AddRemoveBtn"), {
   ssr: false,
 });
 import "./style.scss";
 export default function InputLine({
-  genres,
-  filterRule,
-  setFilterRules,
-  id,
   canDeleteRule,
-  error,
-  handleBlur,
   deleteErrorsOnTypeChange,
+  error,
+  filterRule,
+  genres,
+  handleBlur,
+  id,
+  setFilterRules,
 }) {
   const filterTypes = [
     { value: "cast", text: "Cast" },

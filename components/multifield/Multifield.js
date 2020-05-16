@@ -19,16 +19,17 @@ import {
 export default function ({ genres }) {
   const {
     canDeleteRule,
-    filterRules,
-    setFilterRules,
-    form,
-    setForm,
-    handleOnChange,
-    submiting,
-    handleSubmit,
-    errors,
-    handleBlur,
     deleteErrorsOnTypeChange,
+    errors,
+    filterRules,
+    form,
+    handleBlur,
+    handleCancel,
+    handleOnChange,
+    handleSubmit,
+    setFilterRules,
+    setForm,
+    submiting,
   } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]));
 
   const filterList =
@@ -91,7 +92,7 @@ export default function ({ genres }) {
           Save
         </EuiButton>
         <div className="btn-spacer"></div>
-        <EuiButton className="action-btn" disabled={submiting}>
+        <EuiButton className="action-btn" disabled={submiting} onClick={handleCancel}>
           Cancel
         </EuiButton>
       </div>

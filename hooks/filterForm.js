@@ -50,7 +50,7 @@ export default function filterForm(initialState) {
       axios.post(`/api/signup`, output).then(router.push("/dashboard"));
     } else {
       setSubmiting(false);
-      setErrors(errorObj)
+      setErrors(errorObj);
     }
   }
   // ensure user cannot delete the last filter rule
@@ -80,19 +80,23 @@ export default function filterForm(initialState) {
       return newErrors;
     });
   }
+  function handleCancel() {
+    router.push("/dashboard");
+  }
   return {
     canDeleteRule,
-    setCanDeleteRule,
-    filterRules,
-    setFilterRules,
-    form,
-    setForm,
-    handleOnChange,
-    submiting,
-    setSubmiting,
-    handleSubmit,
-    errors,
-    handleBlur,
     deleteErrorsOnTypeChange,
+    errors,
+    filterRules,
+    form,
+    handleBlur,
+    handleCancel,
+    handleOnChange,
+    handleSubmit,
+    setCanDeleteRule,
+    setFilterRules,
+    setForm,
+    setSubmiting,
+    submiting,
   };
 }
