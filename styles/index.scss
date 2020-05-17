@@ -3,11 +3,47 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
+  background-color: #fff;
 }
 //remove default select arrow
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
   text-indent: 1px;
-  text-overflow: '';
+  text-overflow: "";
+}
+
+.primary-btn {
+  margin: 0 auto;
+  max-width: 10em;
+  border: 2px solid #9100ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 1px 1px 1px rgba(124, 124, 124, 0.658);
+  transition-duration: 0.3s;
+  transition-property: color, background-color;
+  background-color: #9100ff;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+}
+.primary-btn:enabled:hover,
+.primary-btn:enabled:focus,
+.primary-btn:enabled:active {
+  background-color: #b556fc;
+  color: white;
+}
+
+.secondary-btn {
+  @extend .primary-btn;
+  background-color: transparent;
+  color: #9100ff;
+}
+.secondary-btn:enabled:hover,
+.secondary-btn:enabled:focus,
+.secondary-btn:enabled:active {
+  background-color: #f5e7ff;
+  color: #9100ff;
 }

@@ -1,3 +1,4 @@
+import "../styles/index.scss";
 import Head from "next/head";
 import axios from "axios";
 import Link from "next/link";
@@ -5,7 +6,6 @@ import Link from "next/link";
 import Hero from "../components/hero/Hero";
 import Introduction from "../components/introduction/Introduction";
 import Footer from "../components/footer/Footer";
-import style from "../styles/index.scss";
 
 export default function Home({ randomPosterUrl }) {
   return (
@@ -13,12 +13,12 @@ export default function Home({ randomPosterUrl }) {
       <Head>
         <title>Movie News Letter</title>
         <link rel="icon" href="/favicon.ico" />
-        <link
+        {/* <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-        />
+        /> */}
       </Head>
-      <main className={style.landing}>
+      <main className="landing">
         <Hero randomPosterUrl={randomPosterUrl} />
         <Introduction />
       </main>
