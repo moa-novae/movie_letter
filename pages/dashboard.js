@@ -30,7 +30,7 @@ export default function () {
 
   return (
     <>
-      <p>Dashboard</p>;
+      <p>Dashboard</p>
       <EuiBasicTable items={filterRules} columns={columns} responsive={false} />
     </>
   );

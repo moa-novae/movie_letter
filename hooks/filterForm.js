@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-
+import { addNewFilter } from "../db/initializeFirestore";
 import validateField from "./validation";
 
-export default function filterForm(initialState) {
+export default function filterForm(initialState, user) {
   const router = useRouter();
   const [canDeleteRule, setCanDeleteRule] = useState(false);
   /*Filter rules needs its own state because of its volatile nature
@@ -47,7 +47,9 @@ export default function filterForm(initialState) {
         }
         output[field.type].push(field.value);
       }
-      axios.post(`/api/signup`, output).then(router.push("/dashboard"));
+      addNewFilter(user.uid, output)
+        .then(router.push("/dashboard"))
+        .catch((e) => console.log(e));
     } else {
       setSubmiting(false);
       setErrors(errorObj);

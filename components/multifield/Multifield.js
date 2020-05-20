@@ -3,6 +3,7 @@ import shortid from "shortid";
 import axios from "axios";
 import InputLine from "../InputLine/InputLine";
 import useFilterForm from "../../hooks/filterForm";
+import useFirebaseAuth from '../../hooks/useFirebaseAuth'
 
 import "./style.scss";
 
@@ -17,6 +18,7 @@ import {
   EuiButton,
 } from "@elastic/eui";
 export default function ({ genres }) {
+  const {user} = useFirebaseAuth()
   const {
     canDeleteRule,
     deleteErrorsOnTypeChange,
@@ -30,7 +32,7 @@ export default function ({ genres }) {
     setFilterRules,
     setForm,
     submiting,
-  } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]));
+  } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]), user);
 
   const filterList =
     filterRules &&
