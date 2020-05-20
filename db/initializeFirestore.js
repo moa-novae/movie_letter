@@ -56,3 +56,13 @@ export const toggleFilter = function (uid, filterId, bool) {
     .doc(uid)
     .set({ filters: { [filterId]: { enabled: bool } } }, { merge: true });
 };
+
+export const deleteFilter = function (rule) {
+  const db = firebase.firestore();
+  return db
+    .collection("users")
+    .doc(rule.uid)
+    .update({
+      ["filters." + rule.filterId]: firebase.firestore.FieldValue.delete(),
+    });
+};
