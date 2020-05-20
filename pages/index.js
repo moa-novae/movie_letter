@@ -1,3 +1,6 @@
+import { createContext, useState } from "react";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 import "../styles/index.scss";
 import Head from "next/head";
 import axios from "axios";
@@ -13,11 +16,8 @@ export default function Home({ randomPosterUrl }) {
       <Head>
         <title>Movie News Letter</title>
         <link rel="icon" href="/favicon.ico" />
-        {/* <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-        /> */}
       </Head>
+
       <main className="landing">
         <Hero randomPosterUrl={randomPosterUrl} />
         <Introduction />

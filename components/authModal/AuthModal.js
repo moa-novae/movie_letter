@@ -1,5 +1,5 @@
 import shortid from "shortid";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./style.scss";
 
 import {
@@ -22,55 +22,75 @@ import {
   EuiSpacer,
   EuiFieldPassword,
 } from "@elastic/eui";
-import { auth } from "firebase";
 
-export default ({ signIn, register }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const closeModal = () => setIsModalVisible(false);
-  const showModal = () => setIsModalVisible(true);
+import useAuthValidation from "../../hooks/authForm";
 
-  const signInForm = (
+export default ({ register, loginEmail, registerEmail }) => {
+  const {
+    form,
+    handleOnChange,
+    errors,
+    handleBlur,
+    handleSubmit,
+    submitting,
+    closeModal,
+    showModal,
+    isModalVisible,
+  } = useAuthValidation(register, loginEmail, registerEmail);
+
+  const modalForm = (
     <EuiForm>
-      <EuiFormRow label="Email">
-        <EuiFieldText name="email" />
+      <EuiFormRow
+        label="Email"
+        isInvalid={errors?.email?.length}
+        error={errors?.email}
+      >
+        <EuiFieldText
+          name="email"
+          value={form?.email}
+          isInvalid={errors?.email?.length}
+          onChange={handleOnChange}
+          onBlur={handleBlur}
+        />
       </EuiFormRow>
 
-      <EuiFormRow label="Password">
-        <EuiFieldPassword name="password" />
+      <EuiFormRow
+        label="Password"
+        isInvalid={errors?.password?.length}
+        error={errors?.password}
+      >
+        <EuiFieldPassword
+          name="password"
+          value={form?.password}
+          onChange={handleOnChange}
+          onBlur={handleBlur}
+        />
       </EuiFormRow>
-      <EuiSpacer size='xl'/>
-      <EuiFlexGroup alignItems='center'>
+      {register && (
+        <EuiFormRow
+          label="Confirm Password"
+          isInvalid={errors?.passwordConfirm?.length}
+          error={errors?.passwordConfirm}
+        >
+          <EuiFieldPassword
+            name="passwordConfirm"
+            value={form?.passwordConfirm}
+            isInvalid={errors?.passwordConfirm?.length}
+            onChange={handleOnChange}
+            onBlur={handleBlur}
+          />
+        </EuiFormRow>
+      )}
+      <EuiSpacer size="xl" />
+      <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiButton className="primary-btn" type="submit">
-            Sign In
-          </EuiButton>
-        </EuiFlexItem>
-      
-        <EuiFlexItem>
-          <EuiButton className="secondary-btn" onClick={closeModal}>
-            Cancel
-          </EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-    </EuiForm>
-  );
-  const registerForm = (
-    <EuiForm>
-      <EuiFormRow label="Email">
-        <EuiFieldText name="email" />
-      </EuiFormRow>
-
-      <EuiFormRow label="Password">
-        <EuiFieldPassword name="password" />
-      </EuiFormRow>
-      <EuiFormRow label="Confirm Password">
-        <EuiFieldPassword name="passwordConfirm" />
-      </EuiFormRow>
-      <EuiSpacer size='xl'/>
-      <EuiFlexGroup alignItems='center'>
-        <EuiFlexItem>
-          <EuiButton className="primary-btn" type="submit">
-            Register
+          <EuiButton
+            className="primary-btn"
+            type="submit"
+            onClick={handleSubmit}
+            disabled={submitting}
+          >
+            {register ? "Register" : "Login"}
           </EuiButton>
         </EuiFlexItem>
         <EuiFlexItem>
@@ -84,28 +104,17 @@ export default ({ signIn, register }) => {
 
   let modal;
 
-  if (isModalVisible && signIn) {
+  if (isModalVisible) {
     modal = (
       <EuiOverlayMask className="auth-modal">
         <EuiModal onClose={closeModal} initialFocus="[name=email]">
           <EuiModalHeader>
-            <EuiModalHeaderTitle>Sign In</EuiModalHeaderTitle>
+            <EuiModalHeaderTitle>
+              {register ? "Register" : "Login"}
+            </EuiModalHeaderTitle>
           </EuiModalHeader>
 
-          <EuiModalBody>{signInForm}</EuiModalBody>
-        </EuiModal>
-      </EuiOverlayMask>
-    );
-  }
-  if (isModalVisible && register) {
-    modal = (
-      <EuiOverlayMask className="auth-modal">
-        <EuiModal onClose={closeModal} initialFocus="[name=email]">
-          <EuiModalHeader>
-            <EuiModalHeaderTitle>Register</EuiModalHeaderTitle>
-          </EuiModalHeader>
-
-          <EuiModalBody>{registerForm}</EuiModalBody>
+          <EuiModalBody>{modalForm}</EuiModalBody>
         </EuiModal>
       </EuiOverlayMask>
     );
@@ -114,11 +123,10 @@ export default ({ signIn, register }) => {
     <div>
       <EuiButton
         onClick={showModal}
-        className={signIn ? "primary-btn" : "secondary-btn"}
+        className={register ? "secondary-btn" : "primary-btn"}
       >
-        {signIn ? "Sign In" : "Register"}
+        {register ? "Register" : "Sign In"}
       </EuiButton>
-
       {modal}
     </div>
   );

@@ -4,7 +4,7 @@ export default function () {
     { field: "name", name: "Name", sortable: true },
     {
       field: "enabled",
-      name: 'Enabled',
+      name: "Enabled",
       dataType: "boolean",
       render: (enabled) => <EuiCheckbox checked={enabled} />,
     },
@@ -16,7 +16,6 @@ export default function () {
   return (
     <>
       <p>Dashboard</p>;
-      
       <EuiBasicTable items={filterRules} columns={columns} responsive={false} />
     </>
   );
