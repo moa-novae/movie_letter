@@ -1,5 +1,23 @@
 import { EuiBasicTable, EuiCheckbox } from "@elastic/eui";
+import { fetchAllFilters } from "../db/initializeFirestore";
+import useFirebaseAuth from "../hooks/useFirebaseAuth";
+import { useEffect, useState } from "react";
+
 export default function () {
+  const { user } = useFirebaseAuth();
+  const [filterRules, setFilterRules] = useState([]);
+  useEffect(() => {
+    async function asyncFetch(uid) {
+      if (user) {
+        const data = await fetchAllFilters(uid);
+        console.log("uid: ", uid);
+        console.log("data: ", data);
+        setFilterRules(Object.values(data.filters));
+      }
+    }
+    asyncFetch(user?.uid);
+  }, [user]);
+  console.log("data", filterRules);
   const columns = [
     { field: "name", name: "Name", sortable: true },
     {
@@ -9,10 +27,7 @@ export default function () {
       render: (enabled) => <EuiCheckbox checked={enabled} />,
     },
   ];
-  const filterRules = [
-    { name: "test1", enabled: true },
-    { name: "test2", enabled: false },
-  ];
+
   return (
     <>
       <p>Dashboard</p>;

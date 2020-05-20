@@ -2,12 +2,12 @@ import { useState } from "react";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-
+import { initializeNewUser } from "../db/initializeFirestore";
 export default function () {
   if (!firebase.apps.length) {
     firebase.initializeApp(process.env.firebaseConfig);
   }
-  const db = firebase.firestore();
+
   const [user, setUser] = useState();
   (function authStatus() {
     firebase.auth().onAuthStateChanged(function (firebaseUser) {
@@ -24,18 +24,9 @@ export default function () {
     const cred = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
-    console.log("uid", cred.user.uid);
 
-    return db
-      .collection("users")
-      .doc(cred.user.uid)
-      .set({ uid: cred.user.uid, filters: {} })
-      .then(() => {
-        console.log("new user created");
-      })
-      .catch((e) => {
-        console.log("error", e);
-      });
+    console.log("uid", cred.user.uid);
+    initializeNewUser(cred.user.uid);
   }
   function loginEmail(email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
