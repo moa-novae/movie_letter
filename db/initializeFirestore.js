@@ -42,8 +42,17 @@ export const fetchAllFilters = function (uid) {
 
 export const addNewFilter = function (uid, filter) {
   const db = firebase.firestore();
+  const filterId = shortid.generate();
   const finalFilterObj = {
-    filters: { [shortid.generate()]: { ...filter, enabled: true } },
+    filters: { [filterId]: { ...filter, enabled: true, filterId } },
   };
   return db.collection("users").doc(uid).set(finalFilterObj, { merge: true });
+};
+
+export const toggleFilter = function (uid, filterId, bool) {
+  const db = firebase.firestore();
+  return db
+    .collection("users")
+    .doc(uid)
+    .set({ filters: { [filterId]: { enabled: bool } } }, { merge: true });
 };
