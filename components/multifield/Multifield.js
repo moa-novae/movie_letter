@@ -3,7 +3,7 @@ import shortid from "shortid";
 import axios from "axios";
 import InputLine from "../InputLine/InputLine";
 import useFilterForm from "../../hooks/filterForm";
-import useFirebaseAuth from '../../hooks/useFirebaseAuth'
+import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
 import "./style.scss";
 
@@ -17,8 +17,13 @@ import {
   EuiFlexGroup,
   EuiButton,
 } from "@elastic/eui";
-export default function ({ genres, setDashboardView, setAllFilterRules }) {
-  const {user} = useFirebaseAuth()
+export default function ({
+  genres,
+  setDashboardView,
+  setAllFilterRules,
+  editState,
+}) {
+  const { user } = useFirebaseAuth();
   const {
     canDeleteRule,
     deleteErrorsOnTypeChange,
@@ -32,7 +37,15 @@ export default function ({ genres, setDashboardView, setAllFilterRules }) {
     setFilterRules,
     setForm,
     submiting,
-  } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]), user, setDashboardView, setAllFilterRules);
+  } = useFilterForm(
+    editState || {
+      form: { name: "", match: "all" },
+      filter: new Map([["lxkl8gj", { type: "cast", value: "" }]]),
+    },
+    user,
+    setDashboardView,
+    setAllFilterRules
+  );
 
   const filterList =
     filterRules &&
@@ -94,7 +107,11 @@ export default function ({ genres, setDashboardView, setAllFilterRules }) {
           Save
         </EuiButton>
         <div className="btn-spacer"></div>
-        <EuiButton className="action-btn" disabled={submiting} onClick={handleCancel}>
+        <EuiButton
+          className="action-btn"
+          disabled={submiting}
+          onClick={handleCancel}
+        >
           Cancel
         </EuiButton>
       </div>

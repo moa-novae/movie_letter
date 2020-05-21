@@ -6,11 +6,14 @@ import { toggleFilter, deleteFilter } from "../db/initializeFirestore";
 import Head from "next/head";
 import Multifield from "../components/multifield/Multifield";
 import { getGenres } from "./api/genres";
+import shortid from "shortid";
+import { firestore } from "firebase";
 
 export default function ({ genres }) {
   const { user } = useFirebaseAuth();
   const [allFilterRules, setAllFilterRules] = useState(new Map());
   const [dashboardView, setDashboardView] = useState(true);
+  const [editState, setEditState] = useState();
   useEffect(() => {
     async function asyncFetch(uid) {
       if (user) {
@@ -24,8 +27,10 @@ export default function ({ genres }) {
     }
     asyncFetch(user?.uid);
   }, [user]);
-  const test = () => {
-    console.log("clicked");
+  const editFilter = (rule) => {
+    const editState = firestoreToLocalState(rule);
+    setEditState(editState);
+    setDashboardView(false);
   };
   const deleteFilterStateAndFirestore = function (rule) {
     deleteFilter(rule);
@@ -41,7 +46,7 @@ export default function ({ genres }) {
       description: "Edit this rule",
       icon: "documentEdit",
       type: "icon",
-      onClick: test,
+      onClick: editFilter,
     },
     {
       name: "Delete",
@@ -79,6 +84,36 @@ export default function ({ genres }) {
     { name: "Actions", actions },
   ];
 
+  function firestoreToLocalState(firestoreObj) {
+    //map [uid, object]
+    //object: {filterId: '', match: '', enabled: bool, type: [], uid: ''}
+    //convert to
+    //map ["lxkl8gj", { type: "cast", value: "" }]
+    //and {name:'', match: ''}
+
+    let outputObj = {};
+    outputObj.filterId = firestoreObj.filterId;
+    outputObj.filter = new Map();
+    outputObj.form = { name: firestoreObj.name, match: firestoreObj.match };
+    for (const [key, value] of Object.entries(firestoreObj)) {
+      if (
+        key === "cast" ||
+        key === "director" ||
+        key === "genre" ||
+        key === "productionCompany"
+      ) {
+        for (const filterRule of value) {
+          outputObj.filter.set(shortid.generate(), {
+            value: filterRule,
+            type: key,
+          });
+        }
+      }
+    }
+    console.log(outputObj.filter);
+    return outputObj;
+  }
+
   return (
     <>
       {dashboardView && (
@@ -106,6 +141,7 @@ export default function ({ genres }) {
             genres={genres}
             setDashboardView={setDashboardView}
             setAllFilterRules={setAllFilterRules}
+            editState={editState}
           />
         </main>
       )}

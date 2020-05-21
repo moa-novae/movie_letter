@@ -14,11 +14,8 @@ export default function filterForm(
   User will edit and modify each rule, so an unique id is needed 
   for each rule as its key. Onsubmit, filterRules will be converted 
   to the right format and be combined with form state*/
-  const [filterRules, setFilterRules] = useState(initialState);
-  const [form, setForm] = useState({
-    match: "all",
-    name: "",
-  });
+  const [filterRules, setFilterRules] = useState(initialState.filter);
+  const [form, setForm] = useState(initialState.form);
   const [errors, setErrors] = useState({});
   const [submiting, setSubmiting] = useState(false);
   useEffect(() => console.log(errors), [errors]);
@@ -50,7 +47,8 @@ export default function filterForm(
         }
         output[field.type].push(field.value);
       }
-      const filterId = shortid.generate();
+      //use old filterId if editing
+      const filterId = initialState.filterId || shortid.generate();
       const finalFilterObj = {
         filters: { [filterId]: { ...output, enabled: true, filterId } },
       };
