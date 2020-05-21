@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
 import { addNewFilter } from "../db/initializeFirestore";
 import validateField from "./validation";
+import shortid from "shortid";
 
-export default function filterForm(initialState, user) {
-  const router = useRouter();
+export default function filterForm(
+  initialState,
+  user,
+  setDashboardView,
+  setAllFilterRules
+) {
   const [canDeleteRule, setCanDeleteRule] = useState(false);
   /*Filter rules needs its own state because of its volatile nature
   User will edit and modify each rule, so an unique id is needed 
@@ -47,8 +50,23 @@ export default function filterForm(initialState, user) {
         }
         output[field.type].push(field.value);
       }
-      addNewFilter(user.uid, output)
-        .then(router.push("/dashboard"))
+      const filterId = shortid.generate();
+      const finalFilterObj = {
+        filters: { [filterId]: { ...output, enabled: true, filterId } },
+      };
+      setAllFilterRules((prev) => {
+        const newMap = new Map(prev);
+        newMap.set(filterId, {
+          ...output,
+          enabled: true,
+          filterId,
+          uid: user.uid,
+        });
+        return newMap;
+      });
+
+      addNewFilter(user.uid, finalFilterObj)
+        .then(setDashboardView(true))
         .catch((e) => console.log(e));
     } else {
       setSubmiting(false);
@@ -83,7 +101,7 @@ export default function filterForm(initialState, user) {
     });
   }
   function handleCancel() {
-    router.push("/dashboard");
+    setDashboardView(true);
   }
   return {
     canDeleteRule,

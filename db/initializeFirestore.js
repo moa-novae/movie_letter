@@ -40,25 +40,23 @@ export const fetchAllFilters = function (uid) {
     });
 };
 
-export const addNewFilter = function (uid, filter) {
+export const addNewFilter = function (uid, finalFilterObj) {
   const db = firebase.firestore();
-  const filterId = shortid.generate();
-  const finalFilterObj = {
-    filters: { [filterId]: { ...filter, enabled: true, filterId } },
-  };
   return db.collection("users").doc(uid).set(finalFilterObj, { merge: true });
 };
 
 export const toggleFilter = function (uid, filterId, bool) {
   const db = firebase.firestore();
+  const filter = { [filterId]: { enabled: bool } };
   return db
     .collection("users")
     .doc(uid)
-    .set({ filters: { [filterId]: { enabled: bool } } }, { merge: true });
+    .set({ filters: filter }, { merge: true });
 };
 
 export const deleteFilter = function (rule) {
   const db = firebase.firestore();
+  const filterRef = "filters." + rule.filterId
   return db
     .collection("users")
     .doc(rule.uid)

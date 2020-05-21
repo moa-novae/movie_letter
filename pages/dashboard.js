@@ -1,12 +1,16 @@
-import { EuiBasicTable, EuiCheckbox } from "@elastic/eui";
+import { EuiBasicTable, EuiCheckbox, EuiButton } from "@elastic/eui";
 import { fetchAllFilters } from "../db/initializeFirestore";
 import useFirebaseAuth from "../hooks/useFirebaseAuth";
 import { useEffect, useState } from "react";
 import { toggleFilter, deleteFilter } from "../db/initializeFirestore";
+import Head from "next/head";
+import Multifield from "../components/multifield/Multifield";
+import { getGenres } from "./api/genres";
 
-export default function () {
+export default function ({ genres }) {
   const { user } = useFirebaseAuth();
-  const [filterRules, setFilterRules] = useState(new Map());
+  const [allFilterRules, setAllFilterRules] = useState(new Map());
+  const [dashboardView, setDashboardView] = useState(true);
   useEffect(() => {
     async function asyncFetch(uid) {
       if (user) {
@@ -15,13 +19,21 @@ export default function () {
         for (let [key, value] of Object.entries(data.filters)) {
           data.filters[key] = { ...value, uid };
         }
-        setFilterRules(new Map(Object.entries(data.filters)));
+        setAllFilterRules(new Map(Object.entries(data.filters)));
       }
     }
     asyncFetch(user?.uid);
   }, [user]);
   const test = () => {
     console.log("clicked");
+  };
+  const deleteFilterStateAndFirestore = function (rule) {
+    deleteFilter(rule);
+    setAllFilterRules((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(rule.filterId);
+      return newMap;
+    });
   };
   const actions = [
     {
@@ -37,7 +49,7 @@ export default function () {
       icon: "trash",
       type: "icon",
       color: "danger",
-      onClick: deleteFilter,
+      onClick: deleteFilterStateAndFirestore,
     },
   ];
   const columns = [
@@ -51,7 +63,7 @@ export default function () {
           checked={enabled}
           onChange={() => {
             //change local state
-            setFilterRules((prev) => {
+            setAllFilterRules((prev) => {
               const newMap = new Map(prev);
               const oldFilterRule = newMap.get(filter.filterId);
               const newFilterRule = { ...oldFilterRule, enabled: !enabled };
@@ -69,13 +81,40 @@ export default function () {
 
   return (
     <>
-      <p>Dashboard</p>
-      <EuiBasicTable
-        // consolidate map values to array
-        items={Array.from(filterRules.values())}
-        columns={columns}
-        responsive={false}
-      />
+      {dashboardView && (
+        <>
+          <p>Dashboard</p>
+          <EuiBasicTable
+            // consolidate map values to array
+            items={Array.from(allFilterRules.values())}
+            columns={columns}
+            responsive={false}
+          />
+
+          <EuiButton
+            onClick={() => {
+              setDashboardView(false);
+            }}
+          >
+            Create New
+          </EuiButton>
+        </>
+      )}
+      {!dashboardView && (
+        <main>
+          <Multifield
+            genres={genres}
+            setDashboardView={setDashboardView}
+            setAllFilterRules={setAllFilterRules}
+          />
+        </main>
+      )}
     </>
   );
+}
+export async function getStaticProps() {
+  const genres = await getGenres();
+  return {
+    props: { genres },
+  };
 }

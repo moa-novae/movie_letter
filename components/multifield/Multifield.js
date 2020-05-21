@@ -17,7 +17,7 @@ import {
   EuiFlexGroup,
   EuiButton,
 } from "@elastic/eui";
-export default function ({ genres }) {
+export default function ({ genres, setDashboardView, setAllFilterRules }) {
   const {user} = useFirebaseAuth()
   const {
     canDeleteRule,
@@ -32,7 +32,7 @@ export default function ({ genres }) {
     setFilterRules,
     setForm,
     submiting,
-  } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]), user);
+  } = useFilterForm(new Map([["lxkl8gj", { type: "cast", value: "" }]]), user, setDashboardView, setAllFilterRules);
 
   const filterList =
     filterRules &&
