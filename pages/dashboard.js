@@ -1,4 +1,19 @@
-import { EuiBasicTable, EuiCheckbox, EuiButton } from "@elastic/eui";
+import {
+  EuiBasicTable,
+  EuiCheckbox,
+  EuiButton,
+  EuiPage,
+  EuiPageBody,
+  EuiPageContent,
+  EuiPageContentBody,
+  EuiPageContentHeader,
+  EuiPageContentHeaderSection,
+  EuiPageHeader,
+  EuiPageHeaderSection,
+  EuiTitle,
+  EuiText,
+  EuiSpacer,
+} from "@elastic/eui";
 import { fetchAllFilters } from "../db/initializeFirestore";
 import useFirebaseAuth from "../hooks/useFirebaseAuth";
 import { useEffect, useState } from "react";
@@ -117,33 +132,41 @@ export default function ({ genres }) {
   return (
     <>
       {dashboardView && (
-        <>
-          <p>Dashboard</p>
-          <EuiBasicTable
-            // consolidate map values to array
-            items={Array.from(allFilterRules.values())}
-            columns={columns}
-            responsive={false}
-          />
-
-          <EuiButton
-            onClick={() => {
-              setDashboardView(false);
-            }}
-          >
-            Create New
-          </EuiButton>
-        </>
+        <EuiPage>
+          <EuiPageBody>
+            <EuiPageContent>
+              <EuiPageContentHeader>
+                <EuiPageContentHeaderSection>
+                  <EuiTitle>
+                    <h2>Dashboard</h2>
+                  </EuiTitle>
+                </EuiPageContentHeaderSection>
+              </EuiPageContentHeader>
+              <EuiBasicTable
+                // consolidate map values to array
+                items={Array.from(allFilterRules.values())}
+                columns={columns}
+                responsive={false}
+              />
+              <EuiSpacer />
+              <EuiButton
+                onClick={() => {
+                  setDashboardView(false);
+                }}
+              >
+                Create New
+              </EuiButton>
+            </EuiPageContent>
+          </EuiPageBody>
+        </EuiPage>
       )}
       {!dashboardView && (
-        <main>
-          <Multifield
-            genres={genres}
-            setDashboardView={setDashboardView}
-            setAllFilterRules={setAllFilterRules}
-            editState={editState}
-          />
-        </main>
+        <Multifield
+          genres={genres}
+          setDashboardView={setDashboardView}
+          setAllFilterRules={setAllFilterRules}
+          editState={editState}
+        />
       )}
     </>
   );
