@@ -138,7 +138,6 @@ export default function ({ genres }) {
         }
       }
     }
-    console.log(outputObj.filter);
     return outputObj;
   }
 

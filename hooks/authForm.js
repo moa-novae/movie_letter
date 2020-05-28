@@ -91,7 +91,23 @@ export default function (register, loginEmail, registerEmail) {
             closeModal();
           })
           .catch((e) => {
-            console.log(e);
+            if (e.code === "auth/user-not-found") {
+              setErrors((prev) => {
+                const newState = { ...prev };
+                newState.email.push("User not found");
+                return newState
+              });
+              setSubmitting(false);
+            }
+            if (e.code === "auth/wrong-password") {
+              setErrors((prev) => {
+                const newState = { ...prev };
+                newState.password.push("Wrong password");
+                return newState
+              });
+              setSubmitting(false);
+            }
+            setSubmitting(false);
           });
       }
     }
