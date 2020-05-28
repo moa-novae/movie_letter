@@ -31,11 +31,16 @@ export default function ({ genres }) {
   const [editState, setEditState] = useState();
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 5;
+  const onTableChange = ({ page = {} }) => {
+    const { index: pageIndex, size: pageSize } = page;
+    setPageIndex(pageIndex);
+  };
   const totalItemCount = allFilterRules.size;
   const pagination = {
     pageIndex,
     pageSize,
     totalItemCount,
+    hidePerPageOptions: true,
   };
   useEffect(() => {
     async function asyncFetch(uid) {
@@ -152,10 +157,14 @@ export default function ({ genres }) {
               </EuiPageContentHeader>
               <EuiBasicTable
                 // consolidate map values to array
-                items={Array.from(allFilterRules.values())}
+                items={Array.from(allFilterRules.values()).slice(
+                  pageIndex * pageSize,
+                  (pageIndex + 1) * pageSize
+                )}
                 columns={columns}
                 responsive={false}
-                // pagination={pagination}
+                pagination={pagination}
+                onChange={onTableChange}
               />
               <EuiSpacer />
               <EuiButton
