@@ -23,6 +23,7 @@ import Multifield from "../components/multifield/Multifield";
 import { getGenres } from "./api/genres";
 import shortid from "shortid";
 import { firestore } from "firebase";
+import Footer from "../components/footer/Footer";
 
 export default function ({ genres }) {
   const { user } = useFirebaseAuth();
@@ -142,51 +143,54 @@ export default function ({ genres }) {
   }
 
   return (
-    <>
-      {dashboardView && user && (
-        <EuiPage>
-          <EuiPageBody>
-            <EuiPageContent>
-              <EuiPageContentHeader>
-                <EuiPageContentHeaderSection>
-                  <EuiTitle>
-                    <h2>Dashboard</h2>
-                  </EuiTitle>
-                </EuiPageContentHeaderSection>
-              </EuiPageContentHeader>
-              <EuiBasicTable
-                // consolidate map values to array
-                items={Array.from(allFilterRules.values()).slice(
-                  pageIndex * pageSize,
-                  (pageIndex + 1) * pageSize
-                )}
-                columns={columns}
-                responsive={false}
-                pagination={pagination}
-                onChange={onTableChange}
-              />
-              <EuiSpacer />
-              <EuiButton
-                onClick={() => {
-                  setDashboardView(false);
-                }}
-              >
-                Create New
-              </EuiButton>
-            </EuiPageContent>
-          </EuiPageBody>
-        </EuiPage>
-      )}
-      {!dashboardView && user && (
-        <Multifield
-          genres={genres}
-          setDashboardView={setDashboardView}
-          setAllFilterRules={setAllFilterRules}
-          editState={editState}
-        />
-      )}
-      {!user && <p>Log in to access dashboard</p>}
-    </>
+    <div className="dashboard-container">
+      <main>
+        {dashboardView && user && (
+          <EuiPage>
+            <EuiPageBody>
+              <EuiPageContent>
+                <EuiPageContentHeader>
+                  <EuiPageContentHeaderSection>
+                    <EuiTitle>
+                      <h2>Dashboard</h2>
+                    </EuiTitle>
+                  </EuiPageContentHeaderSection>
+                </EuiPageContentHeader>
+                <EuiBasicTable
+                  // consolidate map values to array
+                  items={Array.from(allFilterRules.values()).slice(
+                    pageIndex * pageSize,
+                    (pageIndex + 1) * pageSize
+                  )}
+                  columns={columns}
+                  responsive={false}
+                  pagination={pagination}
+                  onChange={onTableChange}
+                />
+                <EuiSpacer />
+                <EuiButton
+                  onClick={() => {
+                    setDashboardView(false);
+                  }}
+                >
+                  Create New
+                </EuiButton>
+              </EuiPageContent>
+            </EuiPageBody>
+          </EuiPage>
+        )}
+        {!dashboardView && user && (
+          <Multifield
+            genres={genres}
+            setDashboardView={setDashboardView}
+            setAllFilterRules={setAllFilterRules}
+            editState={editState}
+          />
+        )}
+        {!user && <p>Log in to access dashboard</p>}
+      </main>
+      <Footer />
+    </div>
   );
 }
 export async function getStaticProps() {

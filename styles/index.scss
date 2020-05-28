@@ -65,3 +65,10 @@ select {
   flex-direction: column;
   justify-content: space-between;
 }
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
