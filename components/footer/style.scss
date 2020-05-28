@@ -1,1 +1,16 @@
+.footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em 1em;
+}
 
+.footer-link {
+  margin: 1em 1em;
+  color: rgb(100, 100, 100);
+}
+.tmdb-logo {
+  @extend .footer-link;
+  height: 1em;
+
+}

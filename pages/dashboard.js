@@ -29,6 +29,14 @@ export default function ({ genres }) {
   const [allFilterRules, setAllFilterRules] = useState(new Map());
   const [dashboardView, setDashboardView] = useState(true);
   const [editState, setEditState] = useState();
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = 5;
+  const totalItemCount = allFilterRules.size;
+  const pagination = {
+    pageIndex,
+    pageSize,
+    totalItemCount,
+  };
   useEffect(() => {
     async function asyncFetch(uid) {
       if (user) {
@@ -131,7 +139,7 @@ export default function ({ genres }) {
 
   return (
     <>
-      {dashboardView && (
+      {dashboardView && user && (
         <EuiPage>
           <EuiPageBody>
             <EuiPageContent>
@@ -147,6 +155,7 @@ export default function ({ genres }) {
                 items={Array.from(allFilterRules.values())}
                 columns={columns}
                 responsive={false}
+                // pagination={pagination}
               />
               <EuiSpacer />
               <EuiButton
@@ -160,7 +169,7 @@ export default function ({ genres }) {
           </EuiPageBody>
         </EuiPage>
       )}
-      {!dashboardView && (
+      {!dashboardView && user && (
         <Multifield
           genres={genres}
           setDashboardView={setDashboardView}
@@ -168,6 +177,7 @@ export default function ({ genres }) {
           editState={editState}
         />
       )}
+      {!user && <p>Log in to access dashboard</p>}
     </>
   );
 }

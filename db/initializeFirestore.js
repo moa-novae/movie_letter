@@ -7,13 +7,13 @@ import shortid from "shortid";
     firebase.initializeApp(process.env.firebaseConfig);
   }
 })();
-export const initializeNewUser = function (uid) {
+export const initializeNewUser = function (uid, email) {
   const db = firebase.firestore();
   console.log(db);
   return db
     .collection("users")
     .doc(uid)
-    .set({ uid: uid, filters: {} })
+    .set({ uid, filters: {}, email })
     .then(() => {
       console.log("new user created");
     })

@@ -26,7 +26,7 @@ export default function () {
       .createUserWithEmailAndPassword(email, password);
 
     console.log("uid", cred.user.uid);
-    initializeNewUser(cred.user.uid);
+    initializeNewUser(cred.user.uid, cred.user.email);
   }
   function loginEmail(email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password);

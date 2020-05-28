@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
-  background-color: #fff;
+  height: 100vh;
 }
 //remove default select arrow
 select {
@@ -46,4 +46,22 @@ select {
 .secondary-btn:enabled:active {
   background-color: #f5e7ff;
   color: #9100ff;
+}
+//about page section
+.about-container {
+  margin: 3em;
+  max-width: 1000px;
+}
+.tmdb-logo-about {
+  width: 5em;
+}
+.about-paragraph {
+  margin: 1em 0;
+  line-height: 1.5em;
+}
+.about-landing {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
 }
