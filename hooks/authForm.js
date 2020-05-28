@@ -33,12 +33,12 @@ export default function (register, loginEmail, registerEmail) {
       }
     }
     if (type === "password") {
-      if (value.length < 5) {
+      if (value.length < 6) {
         errorObj[type].push("Password is too short");
       }
     }
     if (type === "passwordConfirm") {
-      if (value.length < 5) {
+      if (value.length < 6) {
         errorObj[type].push("Password is too short");
       }
       if (value !== form.password) {
