@@ -5,7 +5,16 @@ import "firebase/auth";
 import { initializeNewUser } from "../db/initializeFirestore";
 export default function () {
   if (!firebase.apps.length) {
-    firebase.initializeApp(process.env.firebaseConfig);
+    const firebaseConfig = {
+      apiKey: process.env.NEXT_PUBLIC_apiKey,
+      authDomain: process.env.NEXT_PUBLIC_authDomain,
+      databaseURL: process.env.NEXT_PUBLIC_databaseURL,
+      projectId: process.env.NEXT_PUBLIC_projectId,
+      storageBucket: process.env.NEXT_PUBLIC_storageBucket,
+      messagingSenderId: process.env.NEXT_PUBLIC_messagingSenderId,
+      appId: process.env.NEXT_PUBLIC_appId,
+    };
+    firebase.initializeApp(firebaseConfig);
   }
 
   const [user, setUser] = useState();

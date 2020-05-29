@@ -1,10 +1,18 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
-import shortid from "shortid";
 
 (function () {
+  const firebaseConfig = {
+    apiKey: process.env.NEXT_PUBLIC_apiKey,
+    authDomain: process.env.NEXT_PUBLIC_authDomain,
+    databaseURL: process.env.NEXT_PUBLIC_databaseURL,
+    projectId: process.env.NEXT_PUBLIC_projectId,
+    storageBucket: process.env.NEXT_PUBLIC_storageBucket,
+    messagingSenderId: process.env.NEXT_PUBLIC_messagingSenderId,
+    appId: process.env.NEXT_PUBLIC_appId,
+  };
   if (!firebase.apps.length) {
-    firebase.initializeApp(process.env.firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
   }
 })();
 export const initializeNewUser = function (uid, email) {
@@ -56,7 +64,7 @@ export const toggleFilter = function (uid, filterId, bool) {
 
 export const deleteFilter = function (rule) {
   const db = firebase.firestore();
-  const filterRef = "filters." + rule.filterId
+  const filterRef = "filters." + rule.filterId;
   return db
     .collection("users")
     .doc(rule.uid)
