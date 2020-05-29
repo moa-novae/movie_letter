@@ -1,7 +1,7 @@
 import Hero from "../components/hero/Hero";
 import axios from "axios";
 import Footer from "../components/footer/Footer";
-import "../styles/index.scss";
+
 export default function ({ randomPosterUrl }) {
   return (
     <div className="about-landing">
