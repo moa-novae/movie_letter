@@ -148,7 +148,7 @@ export default function ({ genres }) {
         {dashboardView && user && (
           <EuiPage>
             <EuiPageBody>
-              <EuiPageContent>
+              <EuiPageContent horizontalPosition="center">
                 <EuiPageContentHeader>
                   <EuiPageContentHeaderSection>
                     <EuiTitle>
@@ -156,25 +156,30 @@ export default function ({ genres }) {
                     </EuiTitle>
                   </EuiPageContentHeaderSection>
                 </EuiPageContentHeader>
-                <EuiBasicTable
-                  // consolidate map values to array
-                  items={Array.from(allFilterRules.values()).slice(
-                    pageIndex * pageSize,
-                    (pageIndex + 1) * pageSize
-                  )}
-                  columns={columns}
-                  responsive={false}
-                  pagination={pagination}
-                  onChange={onTableChange}
-                />
-                <EuiSpacer />
-                <EuiButton
-                  onClick={() => {
-                    setDashboardView(false);
-                  }}
-                >
-                  Create New
-                </EuiButton>
+                <EuiPageContentBody>
+                  <EuiText>{`Currently logged in as ${user.email}`} </EuiText>
+                  <EuiSpacer />
+                  <EuiBasicTable
+                    // consolidate map values to array
+                    items={Array.from(allFilterRules.values()).slice(
+                      pageIndex * pageSize,
+                      (pageIndex + 1) * pageSize
+                    )}
+                    columns={columns}
+                    responsive={false}
+                    pagination={pagination}
+                    onChange={onTableChange}
+                    className="dashboard-table"
+                  />
+                  <EuiSpacer />
+                  <EuiButton
+                    onClick={() => {
+                      setDashboardView(false);
+                    }}
+                  >
+                    Create New
+                  </EuiButton>
+                </EuiPageContentBody>
               </EuiPageContent>
             </EuiPageBody>
           </EuiPage>
