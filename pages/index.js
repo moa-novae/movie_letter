@@ -18,7 +18,7 @@ export default function Home({ randomPosterUrl }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="landing">
+      <main className="index-landing">
         <Hero randomPosterUrl={randomPosterUrl} />
         <Introduction />
       </main>

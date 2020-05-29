@@ -8,15 +8,16 @@ import Link from "next/link";
 export default function () {
   const { registerEmail, loginEmail, logout, user } = useFirebaseAuth();
   return (
-    <div className="container">
+    <div className="intro-container">
       <article className="about">
         <p className="overview">
-          Get email notification for upcoming movies that you might like!
+          Receive monthly email notifications for upcoming movies that you might
+          like!
         </p>
         <img src="/mail.svg" className="email" alt="Image of email on phone" />
         <p className="filter-method">
-          Filter upcoming movies by directors, genres, actors, ratings, or
-          writers!
+          Filter upcoming movies by directors, genres, actors, or production
+          company
         </p>
         <img src="/search.svg" className="filter" alt="Image of a search bar" />
       </article>

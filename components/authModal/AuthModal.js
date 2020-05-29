@@ -82,8 +82,8 @@ export default ({ register, loginEmail, registerEmail }) => {
         </EuiFormRow>
       )}
       <EuiSpacer size="xl" />
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>
+      <EuiFlexGroup justifyContent="center">
+        <EuiFlexItem grow={false}>
           <EuiButton
             className="primary-btn"
             type="submit"
@@ -93,7 +93,7 @@ export default ({ register, loginEmail, registerEmail }) => {
             {register ? "Register" : "Login"}
           </EuiButton>
         </EuiFlexItem>
-        <EuiFlexItem>
+        <EuiFlexItem grow={false}>
           <EuiButton className="secondary-btn" onClick={closeModal}>
             Cancel
           </EuiButton>
@@ -106,7 +106,7 @@ export default ({ register, loginEmail, registerEmail }) => {
 
   if (isModalVisible) {
     modal = (
-      <EuiOverlayMask className="auth-modal">
+      <EuiOverlayMask>
         <EuiModal onClose={closeModal} initialFocus="[name=email]">
           <EuiModalHeader>
             <EuiModalHeaderTitle>
