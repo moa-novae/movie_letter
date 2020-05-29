@@ -1,7 +1,7 @@
-import "./style.scss";
+import style from "./style.module.scss";
 export default function Hero({ randomPosterUrl }) {
   return (
-    <header className='header'>
+    <header className={style.header}>
       <span>
         Movie <br />
         Newsletter

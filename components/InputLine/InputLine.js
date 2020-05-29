@@ -13,7 +13,7 @@ import {
 const AddRemoveBtn = dynamic(() => import("../addRemoveBtn/AddRemoveBtn"), {
   ssr: false,
 });
-import "./style.scss";
+
 export default function InputLine({
   canDeleteRule,
   deleteErrorsOnTypeChange,

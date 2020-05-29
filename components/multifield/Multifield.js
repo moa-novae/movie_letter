@@ -5,7 +5,7 @@ import InputLine from "../InputLine/InputLine";
 import useFilterForm from "../../hooks/filterForm";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
-import "./style.scss";
+import style from "./style.module.scss";
 
 import {
   EuiFieldText,
@@ -70,7 +70,7 @@ export default function ({
   ];
 
   return (
-    <EuiForm component="form" className="filter-form">
+    <EuiForm component="form" className={style["filter-form"]}>
       <EuiFormRow>
         <EuiFormRow
           label="Filter Name"
@@ -96,19 +96,19 @@ export default function ({
         }}
         name="match"
       />
-      <EuiPanel className="filter-rules">{filterList}</EuiPanel>
-      <div className="action-btns-container">
+      <EuiPanel className={style["filter-rules"]}>{filterList}</EuiPanel>
+      <div className={style["action-btns-container"]}>
         <EuiButton
-          className="action-btn"
+          className={style["action-btn"]}
           fill
           onClick={handleSubmit}
           disabled={submiting}
         >
           Save
         </EuiButton>
-        <div className="btn-spacer"></div>
+        <div className={style["btn-spacer"]}></div>
         <EuiButton
-          className="action-btn"
+          className={style["action-btn"]}
           disabled={submiting}
           onClick={handleCancel}
         >

@@ -1,6 +1,6 @@
 import shortid from "shortid";
 import React, { useState, useContext } from "react";
-import "./style.scss";
+import style from "./style.module.scss";
 
 import {
   EuiButton,
@@ -85,7 +85,7 @@ export default ({ register, loginEmail, registerEmail }) => {
       <EuiFlexGroup justifyContent="center">
         <EuiFlexItem grow={false}>
           <EuiButton
-            className="primary-btn"
+            className={style["primary-btn"]}
             type="submit"
             onClick={handleSubmit}
             disabled={submitting}
@@ -94,7 +94,7 @@ export default ({ register, loginEmail, registerEmail }) => {
           </EuiButton>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton className="secondary-btn" onClick={closeModal}>
+          <EuiButton className={style["secondary-btn"]} onClick={closeModal}>
             Cancel
           </EuiButton>
         </EuiFlexItem>
@@ -123,7 +123,7 @@ export default ({ register, loginEmail, registerEmail }) => {
     <div>
       <EuiButton
         onClick={showModal}
-        className={register ? "secondary-btn" : "primary-btn"}
+        className={register ? style["secondary-btn"] : style["primary-btn"]}
       >
         {register ? "Register" : "Sign In"}
       </EuiButton>

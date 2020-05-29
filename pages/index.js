@@ -1,7 +1,6 @@
 import { createContext, useState } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import "../styles/index.scss";
 import Head from "next/head";
 import axios from "axios";
 import Link from "next/link";
