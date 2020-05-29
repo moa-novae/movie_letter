@@ -18,8 +18,7 @@ export default function filterForm(
   const [form, setForm] = useState(initialState.form);
   const [errors, setErrors] = useState({});
   const [submiting, setSubmiting] = useState(false);
-  useEffect(() => console.log(errors), [errors]);
-
+  
   function handleSubmit(e) {
     e.preventDefault();
     //prevent submiting two times

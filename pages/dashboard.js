@@ -201,7 +201,6 @@ export default function ({ genres }) {
 export async function getStaticProps() {
   const genresObj = await fetchGenres();
   const genres = Array.from(Object.values(genresObj));
-  console.log("genres", genres);
   return {
     props: { genres },
   };

@@ -34,7 +34,6 @@ export default function () {
       .auth()
       .createUserWithEmailAndPassword(email, password);
 
-    console.log("uid", cred.user.uid);
     initializeNewUser(cred.user.uid, cred.user.email);
   }
   function loginEmail(email, password) {
