@@ -1,5 +1,5 @@
 .header {
-  width: 100vw;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr [title] minmax(60vw, 80vw) 1fr;
   grid-template-rows: repeat(2, 1fr);
