@@ -32,11 +32,9 @@ export async function getServerSideProps() {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
   }
-  //res.data has many movies
-  const randomTopMovie = selectRandomFromArray(res.data);
-  //a movie has many posters
+  //res.data has many posters of one movie
   const randomPosterUrl =
-    selectRandomFromArray(randomTopMovie.image_path) ||
+    selectRandomFromArray(res.data) ||
     "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
 
   return {

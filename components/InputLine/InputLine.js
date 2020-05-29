@@ -31,10 +31,21 @@ export default function InputLine({
     { value: "productionCompany", text: "Production Company" },
   ];
   //convert genres passed down to an obj consumable by eui
-  const genreOptions = genres.map((genre) => ({
-    value: genre.genre_id,
-    text: genre.name,
-  }));
+  function byAlphabet(a, b) {
+    if (a.text < b.text) {
+      return -1;
+    }
+    if (a.text > b.text) {
+      return 1;
+    }
+    return 0;
+  }
+  const genreOptions = genres
+    .map((genre) => ({
+      value: genre.id,
+      text: genre.name,
+    }))
+    .sort(byAlphabet);
   // const genreOptions = genres.map((genre) => (
   //   <option key={genre} value={genre.genre_id}>
   //     {genre.name}

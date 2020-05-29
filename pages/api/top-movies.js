@@ -1,11 +1,18 @@
-import queryTopMovies from "../../db/top_movie";
+import { fetchTopMovies } from "../../db/initializeFirestore.js";
 
 export default async (req, res) => {
-  res.statusCode = 200;
-  try {
-    const topMovies = await queryTopMovies();
-    res.json(topMovies);
-  } catch {
-    res.statusCode = 500;
-  }
+  return new Promise((resolve, reject) => {
+    fetchTopMovies()
+      .then((response) => {
+        res.statusCode = 200;
+        res.json(response);
+        resolve();
+      })
+      .catch((error) => {
+        res.json(error);
+        console.log("error", error);
+        res.status(405).end();
+        resolve();
+      });
+  });
 };

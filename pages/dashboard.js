@@ -20,9 +20,9 @@ import { useEffect, useState } from "react";
 import { toggleFilter, deleteFilter } from "../db/initializeFirestore";
 import Head from "next/head";
 import Multifield from "../components/multifield/Multifield";
-import { getGenres } from "./api/genres";
 import shortid from "shortid";
 import { firestore } from "firebase";
+import { fetchGenres } from "../db/initializeFirestore";
 import Footer from "../components/footer/Footer";
 
 export default function ({ genres }) {
@@ -199,7 +199,9 @@ export default function ({ genres }) {
   );
 }
 export async function getStaticProps() {
-  const genres = await getGenres();
+  const genresObj = await fetchGenres();
+  const genres = Array.from(Object.values(genresObj));
+  console.log("genres", genres);
   return {
     props: { genres },
   };

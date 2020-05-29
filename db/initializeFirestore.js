@@ -72,3 +72,30 @@ export const deleteFilter = function (rule) {
       ["filters." + rule.filterId]: firebase.firestore.FieldValue.delete(),
     });
 };
+
+export const fetchTopMovies = async function () {
+  const db = firebase.firestore();
+  const topMoviesRef = db.collection("topMovies");
+  const key = topMoviesRef.doc().id;
+  let movie;
+  const movieSnapshot = await topMoviesRef
+    .where(firebase.firestore.FieldPath.documentId(), ">=", key)
+    .limit(1)
+    .get();
+  if (movieSnapshot.size < 1) {
+    movieSnapshot = await topMoviesRef
+      .where(admin.firestore.FieldPath.documentId(), "<", key)
+      .limit(1)
+      .get();
+  }
+  movieSnapshot.forEach((doc) => {
+    movie = doc.data()["image_path"];
+  });
+  return movie;
+};
+
+export const fetchGenres = async function () {
+  const db = firebase.firestore();
+  const genresRef = db.collection("genres").doc("genres");
+  return (await genresRef.get()).data();
+};

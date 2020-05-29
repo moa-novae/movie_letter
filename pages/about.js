@@ -33,16 +33,16 @@ export default function ({ randomPosterUrl }) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get(`http://localhost:3000/api/top-movies`);
-  function selectRandomFromArray(arr) {
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
-  }
-  //res.data has many movies
-  const randomTopMovie = selectRandomFromArray(res.data);
+  // const res = await axios.get(`http://localhost:3000/api/top-movies`);
+  // function selectRandomFromArray(arr) {
+  //   const randomIndex = Math.floor(Math.random() * arr.length);
+  //   return arr[randomIndex];
+  // }
+  // //res.data has many movies
+  // const randomTopMovie = selectRandomFromArray(res.data);
   //a movie has many posters
   const randomPosterUrl =
-    selectRandomFromArray(randomTopMovie.image_path) ||
+    // selectRandomFromArray(randomTopMovie.image_path) ||
     "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
 
   return {
