@@ -8,6 +8,7 @@ import Link from "next/link";
 import Hero from "../components/hero/Hero";
 import Introduction from "../components/introduction/Introduction";
 import Footer from "../components/footer/Footer";
+import { fetchTopMovies } from "../db/initializeFirestore";
 
 export default function Home({ randomPosterUrl }) {
   return (
@@ -27,14 +28,14 @@ export default function Home({ randomPosterUrl }) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get(`http://localhost:3000/api/top-movies`);
+  const res = await fetchTopMovies();
   function selectRandomFromArray(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
   }
   //res.data has many posters of one movie
   const randomPosterUrl =
-    selectRandomFromArray(res.data) ||
+    selectRandomFromArray(res) ||
     "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
 
   return {
