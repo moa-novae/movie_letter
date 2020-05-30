@@ -23,7 +23,7 @@ import {
   EuiFieldPassword,
 } from "@elastic/eui";
 
-import useAuthValidation from "../../hooks/authForm";
+import useAuthValidation from "../../hooks/useAuthForm";
 
 export default ({ register, loginEmail, registerEmail }) => {
   const {

@@ -3,7 +3,7 @@ import { addNewFilter } from "../db/initializeFirestore";
 import validateField from "./validation";
 import shortid from "shortid";
 
-export default function filterForm(
+export default function usefilterForm(
   initialState,
   user,
   setDashboardView,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import shortid from "shortid";
 import axios from "axios";
 import InputLine from "../InputLine/InputLine";
-import useFilterForm from "../../hooks/filterForm";
+import useFilterForm from "../../hooks/useFilterForm";
 import useFirebaseAuth from "../../hooks/useFirebaseAuth";
 
 import style from "./style.module.scss";

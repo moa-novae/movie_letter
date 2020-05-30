@@ -161,6 +161,8 @@ export default function ({ genres }) {
                   <EuiSpacer />
                   <EuiBasicTable
                     // consolidate map values to array
+                    //only show items that are on the page displayed
+                    //page 2 => index 5 to index 9
                     items={Array.from(allFilterRules.values()).slice(
                       pageIndex * pageSize,
                       (pageIndex + 1) * pageSize
@@ -192,6 +194,7 @@ export default function ({ genres }) {
             editState={editState}
           />
         )}
+        {/* only show dashboard when logged in  */}
         {!user && <p>Log in to access dashboard</p>}
       </main>
       <Footer />
