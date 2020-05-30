@@ -118,7 +118,7 @@ export default function InputLine({
         <EuiFlexItem>
           <div>
             <EuiFormRow
-              label="Value"
+              label="Name"
               error={error}
               isInvalid={error && error?.length > 0}
             >
@@ -144,7 +144,7 @@ export default function InputLine({
         <EuiFlexItem grow={false}>
           <div>
             <EuiFormRow
-              label="Value"
+              label="Category"
               error={error}
               isInvalid={error && error?.length > 0}
             >
