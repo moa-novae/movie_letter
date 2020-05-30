@@ -1,6 +1,6 @@
 import Hero from "../components/hero/Hero";
-import axios from "axios";
 import Footer from "../components/footer/Footer";
+import { fetchTopMovies } from "../db/initializeFirestore";
 
 export default function ({ randomPosterUrl }) {
   return (
@@ -9,6 +9,11 @@ export default function ({ randomPosterUrl }) {
         <Hero randomPosterUrl={randomPosterUrl} />
         <div className="about-container">
           <p className="about-paragraph">I made this for fun!</p>
+          <p className="about-paragraph">
+            Tell me the types of movie you would like to watch, and I will send
+            you a monthly email containing movies that are coming out in the
+            next three months
+          </p>
           <p className="about-paragraph">
             <span>
               There are still a lot of features I would like to implement. If
@@ -33,16 +38,14 @@ export default function ({ randomPosterUrl }) {
 }
 
 export async function getServerSideProps() {
-  // const res = await axios.get(`http://localhost:3000/api/top-movies`);
-  // function selectRandomFromArray(arr) {
-  //   const randomIndex = Math.floor(Math.random() * arr.length);
-  //   return arr[randomIndex];
-  // }
-  // //res.data has many movies
-  // const randomTopMovie = selectRandomFromArray(res.data);
-  //a movie has many posters
+  const res = await fetchTopMovies();
+  function selectRandomFromArray(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
+  //res.data has many posters of one movie
   const randomPosterUrl =
-    // selectRandomFromArray(randomTopMovie.image_path) ||
+    selectRandomFromArray(res) ||
     "https://image.tmdb.org/t/p/original/eMAHXzZXoNzximFSYm2hn0LiPB0.jpg";
 
   return {

@@ -1,10 +1,6 @@
-import { createContext, useState } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import Head from "next/head";
-import axios from "axios";
-import Link from "next/link";
-
 import Hero from "../components/hero/Hero";
 import Introduction from "../components/introduction/Introduction";
 import Footer from "../components/footer/Footer";

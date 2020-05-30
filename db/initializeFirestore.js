@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
+//Contains all the functions that interacts with firestore
 (function () {
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_apiKey,

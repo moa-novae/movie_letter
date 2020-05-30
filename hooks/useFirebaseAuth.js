@@ -3,6 +3,7 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import { initializeNewUser } from "../db/initializeFirestore";
+//Handles authentication with firebase
 export default function () {
   if (!firebase.apps.length) {
     const firebaseConfig = {
