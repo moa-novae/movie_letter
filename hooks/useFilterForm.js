@@ -18,7 +18,7 @@ export default function usefilterForm(
   const [form, setForm] = useState(initialState.form);
   const [errors, setErrors] = useState({});
   const [submiting, setSubmiting] = useState(false);
-  
+
   function handleSubmit(e) {
     e.preventDefault();
     //prevent submiting two times
@@ -51,6 +51,7 @@ export default function usefilterForm(
       const finalFilterObj = {
         filters: { [filterId]: { ...output, enabled: true, filterId } },
       };
+      //set filter rules on dashboard
       setAllFilterRules((prev) => {
         const newMap = new Map(prev);
         newMap.set(filterId, {
@@ -63,7 +64,12 @@ export default function usefilterForm(
       });
 
       addNewFilter(user.uid, finalFilterObj)
-        .then(setDashboardView(true))
+        .then(() => {
+          //reset form and go to dash
+          setFilterRules(new Map([["lxkl8gj", { type: "cast", value: "" }]]));
+          setForm({ name: "", match: "all" });
+          setDashboardView(true);
+        })
         .catch((e) => console.log(e));
     } else {
       setSubmiting(false);
@@ -98,6 +104,9 @@ export default function usefilterForm(
     });
   }
   function handleCancel() {
+    //reset form and go to dash
+    setFilterRules(new Map([["lxkl8gj", { type: "cast", value: "" }]]));
+    setForm({ name: "", match: "all" });
     setDashboardView(true);
   }
   return {
